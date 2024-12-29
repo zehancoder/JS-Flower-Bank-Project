@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-[#6da5b8]">
+    <div class="px-8 py-2 w-80 h-32 object-cover">
+        <h1 class="text-4xl font-sans font-bold text-[#203a6b] ">Flower Bank</h1>
+    </div>
+    <div class="max-w-[100rem] md:px-8 px-4 md:py-5 py-3 mx-auto mt-10  grid grid-cols-12 ">
+        <div class="lg:col-span-8 col-span-12  p-7   text-[#F1F0E8] shadow-lg">
+            <div class="flex items-center md:gap-6 gap-3">
+                <h3 class="text-2xl font-semibold text-[#1C325B]">Your Current Balance: </h3> <span class="balance  text-4xl font-bold text-[#1C325B]" id="balance-Id">50$</span>
+            </div>
+            <div class="flex items-center mt-14 pl-3 md:space-x-8 space-x-2">
+                <button class="md:px-8 md:py-3 px-6 py-2 rounded  border border-[#1C325B] md:text-lg text-base transition text-white  font-medium tracking-wide; bg-[#1C325B]" id="receive-Btn">Receive<i class="fa-solid fa-plus ml-3"></i></button>
+                <button class="receiveBtn" id="send-Btn">Send<i class="fa-regular fa-paper-plane ml-3"></i></button>
+            </div>
+            <!-- send form---->
+            <form class=" px-3 py-8 mt-12  rounded hidden " id="form-send">
+                <h2 class="text-lg font-medium mb-4 text-[#1C325B] border-b py-2 border-[#1C325B]">Send Money</h2>
+                <label for="address" class="text-[#1C325B] font-medium text-xl">Address :-</label> <br>
+                <input type="text" id="address" class="mt-3 px-3 py-2 lg:w-2/4 md:w-5/6 w-full rounded-md text-[#1C325B] bg-transparent border border-[#1C325B] mb-5 focus:outline-none"><br>
+                <label for="ammount" class="text-[#1C325B] font-medium text-xl">Amount :-</label><br>
+                <input type="number" id="ammount" class="mt-3 px-3 py-2  lg:w-2/4 md:w-5/6 w-full rounded-md text-[#1C325B] bg-transparent border focus:outline-none border-[#1C325B]"><br>
+                <button class="receiveBtn mt-5 hover:bg-[#1C325B]" id="submit-Btn">Submit</button>
+            </form>
+            <!-- receive form -->
+            <div class="mt-12" id = "form-receive">
+                <p class="text-lg font-medium mb-4 text-[#1C325B] border-b border-[#1C325B] py-2">Receive Money</p>
+                <div class="flex items-center">
+                    <h2 class="text-lg font-medium mb-4 text-[#1C325B]">Your Wallet Address </h2><i class="fa-solid fa-arrow-turn-down ml-3 font-bold text-[#1C325B]"></i>
+                </div>
+                <h1 class="text-lg font-medium mb-4 text-[#1C325B] md:ml-28 ml-0 break-words">0x91aa443C5a08D213dC5F24938f49625f06eDfacF</h1>
+                <form class=" px-3 py-8 mt-12  rounded" >
+                    <label for="address" class="text-[#1C325B] font-medium text-xl">Address :-</label> <br>
+                    <input type="text" id="receive-address" class="mt-3 px-3 py-2 lg:w-2/4 md:w-5/6 w-full rounded-md text-[#1C325B] bg-transparent border border-[#1C325B] mb-5 focus:outline-none"><br>
+                    <label for="ammount" class="text-[#1C325B] font-medium text-xl">Amount :-</label><br>
+                    <input type="number" id="receive-ammount" class="mt-3 px-3 py-2  lg:w-2/4 md:w-5/6 w-full rounded-md text-[#1C325B] bg-transparent border focus:outline-none border-[#1C325B]"><br>
+                    <button class="receiveBtn mt-5 hover:bg-[#1C325B]" id="ammount-receive">Submit</button>
+                </form>
+            </div>
+        </div>
+        <!-- history list -->
+        <div class="lg:col-span-4 col-span-12  md:px-5 px-2 md:py-6 py-3">
+            <button class="receiveBtn text-white hover:bg-[#1C325B]" id="his-Btn">Transaction History<i class="fa-solid fa-angle-down ml-3 transition-all duration-300" id="rotateIcon"></i></button>
+            <div class="rounded shadow-lg bg-[#1C325B] p-3 mt-4 transition-all scale-0 " id="his-parent">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // send form receive form Btn ele
+        let receiveBtn = document.querySelector("#receive-Btn");
+        let sendBtn = document.querySelector("#send-Btn");
+        let curBalance = document.querySelector("#balance-Id");
+
+        // send ele
+        let sendForm = document.querySelector("#form-send");
+        let address = document.querySelector("#address");
+        let ammount = document.querySelector("#ammount");
+        let sendMoneyBtn = document.querySelector("#submit-Btn");
+
+        // receive ele;
+        let receiveForm = document.querySelector("#form-receive");
+        let ammountReceiveBtn = document.querySelector("#ammount-receive");
+        let ammountRInput = document.querySelector("#receive-ammount");
+        let ammountRAddress = document.querySelector("#receive-address");
+
+        // history btn ele
+        let HistoryBtn = document.querySelector("#his-Btn");
+        let rotateIcon  = document.querySelector("#rotateIcon");
+        let hisParent = document.querySelector("#his-parent")
+
+        // all event
+
+        sendBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            sendFunc();
+        })
+        receiveBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+           receiveFunc();
+        });
+        ammountReceiveBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            receiveAmmountFunc(e)
+        });
+        sendMoneyBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            sendMoneyFunc();
+        });
+        HistoryBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if(hisParent.innerHTML != ""){
+                rotateIcon.classList.toggle("rotate-180");
+                hisParent.classList.toggle("scale-0")
+            }
+        })
+
+
+        // function
+        // receive money
+        let receiveFunc = () => {
+            setTimeout(() => {
+                sendForm.classList.add("hidden");
+                receiveForm.classList.remove("hidden");
+                receiveBtn.style.backgroundColor = "#1C325B";
+                sendBtn.style.backgroundColor = "transparent";
+            }, 200)
+        }
+        let sendFunc = () => {
+            setTimeout(() => {
+                sendForm.classList.remove("hidden");
+                receiveForm.classList.add("hidden");
+                sendBtn.style.backgroundColor = "#1C325B";
+                receiveBtn.style.backgroundColor = "transparent"
+            }, 200)
+        }
+        let receiMsg = "";
+        let receiveAmmountFunc = (e) => {
+            let ammountRInputVal = parseInt(ammountRInput.value);
+            let currMyBalance = parseInt(curBalance.innerText);
+            if(ammountRInputVal > 0){
+                setTimeout(() => {
+
+                    alert(`Receive SuccessFully from: ${ammountRAddress.value} Receive Ammount: ${ammountRInputVal}$`);
+                    curBalance.innerHTML = currMyBalance +ammountRInputVal + "$";
+                    receiMsg = "Receive History"
+                    resHistoryFunc();
+                    ammountRInput.value = "";
+                    ammountRAddress.value = "";
+                }, 400);
+            }
+        }
+
+        // send money;
+        let sendMsg = ""
+        let sendMoneyFunc = () => {
+            let currMyBalance = parseInt(curBalance.innerText);
+            let addressAmmount = parseInt(ammount.value);
+            if(addressAmmount > 0){
+                setTimeout(() => {
+                    if(addressAmmount > currMyBalance){
+                        alert(`Your Sending Balance is high from your current Balance: ${currMyBalance}$`)
+                    }else if(addressAmmount < currMyBalance){
+                        alert(`Send Successfully in: ${address.value} send Ammount: ${addressAmmount}$`)
+                        curBalance.innerText = currMyBalance - addressAmmount + "$";
+                        sendMsg = "Send History"
+                        sendHisFunc();
+                        ammount.value = "";
+                        address.value = "";
+                    }
+                    
+                }, 400)
+            }
+        }
+
+        // history func 
+        // receive history;
+        let resHistoryFunc = () => {
+            hisParent.innerHTML += `<div class=" px-2  py-1 w-full bg-[#6da5b8] rounded-lg text-white relative mt-3" id="all-Trans">
+                    <p class = "text-[12px] absolute right-0 top-0 text-[#1C325B] p-1 px-2 bg-[#C6E7FF]">${receiMsg}</p>
+                    <p class="text-base text-white font-semibold mt-4 py-1" id="address-his max-w-5/6 ">Address: <span class = "break-words text-[#1C325B]">${ammountRAddress.value}</span></p>
+                    <p class="text-base  text-white font-semibold" id="ammount-his">Receive Ammount: <span class = "break-words text-[#1C325B]">${ammountRInput.value}$</span></p>
+                </div>`
+        }
+        // send history
+        let sendHisFunc = () => {
+            hisParent.innerHTML += `<div class=" px-2  py-1 w-full bg-[#6da5b8] rounded-lg text-white relative mt-3" id="all-Trans">
+                    <p class = "text-[12px] absolute right-0 top-0 text-[#1C325B] p-1 px-2 bg-[#C6E7FF]">${sendMsg}</p>
+                    <p class="text-base text-white font-semibold mt-4 py-1" id="address-his">Address: <span class = "break-words text-[#1C325B]">${address.value}</span></p>
+                    <p class="text-base  text-white font-semibold" id="ammount-his">Send Ammount: <span class = "break-words text-[#1C325B]">${ammount.value}$</span></p>
+                </div>`
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.receiveBtn{
+    @apply  md:px-8 md:py-3 px-6 py-2 rounded  bg-transparent border border-[#1C325B] md:text-lg text-base transition text-white hover:bg-transparent font-medium tracking-wide;
+}
